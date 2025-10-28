@@ -1,7 +1,7 @@
 ##📦 Sistema de Gerenciamento de Estoque
 Este projeto é um sistema simples de gerenciamento de estoque, desenvolvido para a disciplina de Pensamento Computacional. O programa permite ao usuário gerenciar produtos em um inventário (provavelmente via console).
 
-🛠️ #Tecnologia Utilizada
+#Tecnologia Utilizada 🛠️
 Linguagem: Python
 
 #🚀 Modo de usar
@@ -62,6 +62,7 @@ Luiz Henrique Appelt Weller
 Ricardo Trento Werner
 
 #Trabalho desenvolvido para a disciplina de Pensamento Computacional, sob orientação do Professor Augusto Ortolan.
+
 
 
 
