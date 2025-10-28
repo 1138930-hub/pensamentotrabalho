@@ -18,7 +18,7 @@ ARQUIVO_LOG = "dados/log.txt"
 
 
 
-
+#fiz uma alteração
   
                 
 
