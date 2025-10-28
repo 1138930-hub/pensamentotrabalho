@@ -5,7 +5,7 @@ from funcoes import listar_produtos
 #id do produto
 id = 1
 
-# Lista de vai guardar os produtos em memória 
+# Lista de vai guardar os produtos na memória 
 estoque_da_loja = []  
 
 print("\n=== CONTROLE DE ESTOQUE ===")
@@ -17,6 +17,7 @@ print("5. Sair")
 
 escolha_do_usuario = 0
 
+#fiz uma alteração
 
 # limpar_terminal()
 
