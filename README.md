@@ -1,13 +1,13 @@
-##📦 Sistema de Gerenciamento de Estoque
+## 📦 Sistema de Gerenciamento de Estoque
 Este projeto é um sistema simples de gerenciamento de estoque, desenvolvido para a disciplina de Pensamento Computacional. O programa permite ao usuário gerenciar produtos em um inventário (provavelmente via console).
 
-#Tecnologia Utilizada 🛠️
+# 🛠️ Tecnologia Utilizada 
 Linguagem: Python
 
-#🚀 Modo de usar
+# 🚀 Modo de usar
 Para executar este projeto em sua máquina local, siga os passos abaixo.
 
-#Pré-requisitos
+# Pré-requisitos
 Antes de começar, você precisará ter o Python instalado em seu computador.
 
 Você pode baixar o Python em: python.org/downloads
@@ -54,14 +54,15 @@ python main.py
 
 Pronto! O menu do sistema de estoque deve aparecer no seu terminal. Siga as instruções na tela para cadastrar, consultar ou gerenciar produtos.
 
-#👥 Autores
+# 👥 Autores
 Gabriel Pasuch Granja
 
 Luiz Henrique Appelt Weller
 
 Ricardo Trento Werner
 
-#Trabalho desenvolvido para a disciplina de Pensamento Computacional, sob orientação do Professor Augusto Ortolan.
+*Trabalho desenvolvido para a disciplina de Pensamento Computacional, sob orientação do Professor Augusto Ortolan.*
+
 
 
 
