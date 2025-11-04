@@ -2,7 +2,8 @@
 Este projeto é um sistema simples de gerenciamento de estoque, desenvolvido para a disciplina de Pensamento Computacional. O programa permite ao usuário gerenciar produtos em um inventário (provavelmente via console).
 
 # 🛠️ Tecnologia Utilizada 
-Linguagem: Python
+Linguagem: Python(manipulação de dados, funções, listas, loops, etc...)
+
 
 # 🚀 Modo de usar
 Para executar este projeto em sua máquina local, siga os passos abaixo.
@@ -55,13 +56,14 @@ python main.py
 Pronto! O menu do sistema de estoque deve aparecer no seu terminal. Siga as instruções na tela para cadastrar, consultar ou gerenciar produtos.
 
 # 👥 Autores
-Gabriel Pasuch Granja
+Gabriel Pasuch Granja - 1138917
 
-Luiz Henrique Appelt Weller
+Luiz Henrique Appelt Weller - 1138930
 
-Ricardo Trento Werner
+Ricardo Trento Werner - 1138812
 
 *Trabalho desenvolvido para a disciplina de Pensamento Computacional, sob orientação do Professor Augusto Ortolan.*
+
 
 
 
