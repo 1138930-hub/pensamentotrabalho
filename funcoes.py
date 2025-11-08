@@ -6,6 +6,14 @@ ARQUIVO_DADOS = "dados/estoque.csv"
 ARQUIVO_LOG = "dados/log.txt"
 
 
+# Paleta de Cores
+VERMELHO = '\033[91m'  # Cor vermelha para erros
+VERDE = '\033[32m'    # Cor verde para sucesso
+AMARELO = '\033[93m' # Cor amarela para avisos
+AZUL = '\033[94m'     # Cor azul para títulos e menus
+NONE = '\033[0m'     # Código para "resetar" a cor para o padrão
+NEGRITO = '\033[1m'  # Código para texto em negrito
+
 
 def limpar_terminal(): #Limpa o terminal para ficar mais organizado
     os.system("cls")
@@ -62,17 +70,23 @@ def carregar_estoque_csv():
 def main():
     estoque_da_loja, id_produto = carregar_estoque_csv() #Carrega o arquivo estoque.CSV e o último ID cadastrado. 
 
+    limpar_terminal()
+    
     while True:
-        print('''
-            ==== CONTROLE DE ESTOQUE ==== 
-            ==== MENU PRINCIPAL ====
+        print(f'''
+            ====== {AZUL}CONTROLE DE ESTOQUE{NONE} =======
+            ---------------------------------- 
+            ========= MENU PRINCIPAL =========
+            
             1. Cadastrar produtos
             2. Listar produtos
             3. Editar produto 
             4. Excluir produto
             5. Limpar toda a lista de produtos
             6. Sair
-            =============================
+            
+            ==================================
+            ----------------------------------
             ''')
 
         try:
@@ -82,6 +96,8 @@ def main():
                 continue
         
         limpar_terminal()
+        
+        # Cada escolha do usuário chama a função correspondente
 
         if escolha_do_usuario == 1:
                     print("Cadastrar produto: ")
@@ -128,12 +144,12 @@ def cadastrar_produto(estoque_da_loja):
 
     id_atual = gerar_novo_id(estoque_da_loja)   
     
-    print("=== Cadastrar produto ===")
+    print(f"=== {AZUL}Cadastrar produto{NONE} ===")
 
     nome = input("Digite o nome do produto: ").strip().upper()
     
     while not nome:
-        print("Nome não pode estar vazio!")
+        print(f"{VERMELHO}Nome não pode estar vazio!{NONE}")
         nome = input("Digite o nome do produto: ").strip().upper()
     
     # --- VERIFICAÇÃO DE DUPLICIDADE ---
@@ -142,7 +158,7 @@ def cadastrar_produto(estoque_da_loja):
         # Compara os nomes ignorando maiúsculas/minúsculas
         if produto['nome'].lower() == nome.lower(): 
             produto_ja_existe = True
-            print(f"\nErro: O produto '{nome}' já está cadastrado (ID: {produto['id']}).")
+            print(f"{VERMELHO}Erro:{NONE} O produto '{nome}' já está cadastrado (ID: {produto['id']}).")
             print("Use a Opção 3 (Editar) se quiser adicionar estoue ou alterar o preço.")
             break
     
@@ -157,14 +173,14 @@ def cadastrar_produto(estoque_da_loja):
             quantidade = int(input("Digite a quantidade de produtos: "))
             break
         except ValueError:
-            print("Quantidade inválida! Deve ser um número inteiro.")
+            print(f"{VERMELHO}Quantidade inválida! Deve ser um número inteiro.{NONE}")
 
     while True:
         try:
             preco = float(input("Digite o preço do produto: "))
             break
         except ValueError:
-            print("Preço inválido! Use ponto para decimais (ex: 10.50).")
+            print(f"{VERMELHO}Preço inválido! Use ponto para decimais (ex: 10.50).{NONE}")
 
     novo_produto = {
         "id": id_atual,
@@ -177,29 +193,44 @@ def cadastrar_produto(estoque_da_loja):
     salvar_estoque_csv(estoque_da_loja)
     registrar_log("Cadastro de novo produto", nome)
 
-    print(f"Produto '{nome}' cadastrado com sucesso!")
+    print(f"{VERDE}Produto '{nome}' cadastrado com sucesso!{NONE}")
                                                    
     
     
 
 
 def listar_produtos(estoque_da_loja):
-    print("--- Lista de Produtos ---")
+    print(f"--- {AZUL}Lista de Produtos{NONE} ---")
 
     if not estoque_da_loja:
-        print("Nenhum produto cadastrado ainda.")
+        print(f"{AMARELO}Nenhum produto cadastrado ainda.{NONE}")
         return
-
+    
+    # Definindo larguras fixas para cada coluna
+    LARGURA_ID = 5
+    LARGURA_NOME = 20
+    LARGURA_QTD = 8
+    LARGURA_PRECO = 12 # Para R$ X.YY
+    
+    # Imprime o cabeçalho da tabela com alinhamento
+    print(f"{'ID':<{LARGURA_ID}} | {'Nome':<{LARGURA_NOME}} | {'Qtd':<{LARGURA_QTD}} | {'Preço':<{LARGURA_PRECO}}")
+    print("-" * (LARGURA_ID + LARGURA_NOME + LARGURA_QTD + LARGURA_PRECO + (3 * 3))) # A linha divisória
+    
     for produto in estoque_da_loja:
-        print(f"ID: {produto['id']} | Nome: {produto['nome']} | "
-              f"Qtd: {produto['quantidade']} | Preço: R$ {produto['preco']:.2f}")
+        # Formata o preço para 2 casas decimais e adiciona "R$"
+        preco_formatado = f"R$ {produto['preco']:.2f}" 
+
+        # Imprime cada linha de produto com alinhamento
+        print(f"{produto['id']:<{LARGURA_ID}} | {produto['nome']:<{LARGURA_NOME}} | {produto['quantidade']:<{LARGURA_QTD}} | {preco_formatado:<{LARGURA_PRECO}}")
+
+    print("-" * (LARGURA_ID + LARGURA_NOME + LARGURA_QTD + LARGURA_PRECO + (3 * 3))) # A linha divisória
 
 
 def editar_produto(estoque_da_loja):
-    print("=== Editar produto ===")
+    print(f"=== {AZUL}Editar produto{NONE} ===")
 
     if not estoque_da_loja:
-        print("Nenhum produto cadastrado.")
+        print(f"{AMARELO}Nenhum produto cadastrado.{NONE}")
         return
 
     listar_produtos(estoque_da_loja)
@@ -208,16 +239,17 @@ def editar_produto(estoque_da_loja):
         id_editar = int(input("Digite o ID do produto que deseja editar: "))
     except ValueError:
         print("ID inválido!")
-        return
+        id_editar = int(input("Digite o ID do produto que deseja editar: "))
+        
 
     produto = next((item for item in estoque_da_loja if item["id"] == id_editar), None)
 
     if produto is None:
-        print("Produto não encontrado!")
+        print(f"{AMARELO}Produto não encontrado!{NONE}")
         return
 
     print(f"Produto selecionado: {produto['nome']}")
-    print("Deixe o campo vazio para manter o valor atual.")
+    print(f"{AMARELO}Deixe o campo vazio para manter o valor atual.{NONE}")
 
     novo_nome = input("Novo nome do produto: ").strip()
     if novo_nome:
@@ -228,25 +260,25 @@ def editar_produto(estoque_da_loja):
         try:
             produto["quantidade"] = int(nova_quantidade)
         except ValueError:
-            print("Quantidade inválida! Valor não alterado.")
+            print(f"{VERMELHO}Quantidade inválida!{NONE} {AMARELO}Valor não alterado.{NONE}")
 
     novo_preco = input("Novo preço do produto: ").strip()
     if novo_preco:
         try:
             produto["preco"] = float(novo_preco)
         except ValueError:
-            print("Preço inválido! Valor não alterado.")
+            print(f"{VERMELHO}Preço inválido!{NONE} {AMARELO}Valor não alterado.{NONE}")
 
     salvar_estoque_csv(estoque_da_loja)
     registrar_log("Edição do produto", produto["nome"])
-    print("Produto atualizado com sucesso!")
+    print(f"{VERDE}Produto atualizado com sucesso!{NONE}")
 
 
 def excluir_produto(estoque_da_loja):
-    print("=== Excluir produto ===")
+    print(f"=== {AZUL}Excluir produto{NONE} ===").upper()
 
     if not estoque_da_loja:
-        print("Nenhum produto cadastrado.")
+        print(f"{AMARELO}Nenhum produto cadastrado.{NONE}")
         return
 
     listar_produtos(estoque_da_loja)
@@ -278,15 +310,15 @@ def limpar_lista(lista_produtos):
     Exclui TODOS os produtos da lista e do arquivo, após confirmação.
     """
     global salvar_estoque_csv, registrar_log, nome_produto
-    print("--- Excluir Todos os Produtos ---")
+    print(f"--- {AZUL}Excluir Todos os Produtos{NONE} ---").upper()
     
     if not lista_produtos:
-        print("A lista de produtos já está vazia.")
+        print(f"{AMARELO}A lista de produtos já está vazia.{NONE}")
         return lista_produtos
 
     # Confirmação de segurança
-    print(f"ATENÇÃO: Esta ação é IRREVERSÍVEL.")
-    print(f"Você está prestes a apagar todos os {len(lista_produtos)} produtos do sistema.")
+    print(f"{AMARELO}ATENÇÃO: Esta ação é IRREVERSÍVEL.{NONE}")
+    print(f"{AMARELO}Você está prestes a apagar todos os {len(lista_produtos)} produtos do sistema.{NONE}")
     
     confirmacao = input(f"Digite 's' para confirmar: ").upper().strip()
 
@@ -295,8 +327,8 @@ def limpar_lista(lista_produtos):
         lista_produtos.clear()      # Limpa a lista em memória
         salvar_estoque_csv(lista_produtos)  # Salva a lista vazia no arquivo JSON
         
-        print(f"Todos os produtos foram excluídos com sucesso.")
+        print(f"{VERDE}Todos os produtos foram excluídos com sucesso.{NONE}")
     else:
-        print("Ação cancelada. Nenhum produto foi excluído.")
+        print("f{VERDE}Ação cancelada. Nenhum produto foi excluído.{NONE}")
 
     return lista_produtos
